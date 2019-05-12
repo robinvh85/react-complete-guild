@@ -1,0 +1,36 @@
+import React, { Component } from 'react';
+import './App.css';
+import Person from './Person/Person';
+
+class App extends Component {
+
+  state = {
+    persons: [
+      {name: 'VH1', age: 15},
+      {name: 'VH2', age: 20}
+    ],
+    other_value: 'Other values'
+  }
+
+  changeNewHandler = () => {
+    this.state = this.setState({
+      persons: [
+        {name: 'VH11', age: 115},
+        {name: 'VH21', age: 220}
+      ]
+    })
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <h1>Hello, I'm React App</h1>
+        <button onClick={this.changeNewHandler}>Change new</button>
+        <Person name={this.state.persons[0].name} age={this.state.persons[0].age} />
+        <Person name={this.state.persons[1].name} age={this.state.persons[1].age}>Welcome</Person>
+      </div>
+    );
+  }
+}
+
+export default App;
