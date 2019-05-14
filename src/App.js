@@ -1,38 +1,47 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
 
-const app = (props) => {
-  const [personState, setPersonsState] = useState({
+class App extends Component {
+
+  state = {
     persons: [
       {name: 'VH1', age: 15},
       {name: 'VH2', age: 20}
     ],
-  });
+    other_value: 'Other values'
+  }
 
-  const [otherState, setOtherState] = useState({
-    other: "Other state"
-  })
+  changeNewHandler = (event, index) => {
+    const persons = [...this.state.persons]
+    persons[index].name = event.target.value
+    this.setState({persons: persons})
+  }
 
-  const changeNewHandler = () => {
-    setPersonsState({
-      persons: [
-        {name: 'VH11', age: 115},
-        {name: 'VH21', age: 220}
-      ]
+  deleteHandler = (index) => {
+    const persons = [...this.state.persons]
+    persons.splice(index, 1)
+    this.setState({persons: persons})
+  }
+
+  render() {
+    const personList = this.state.persons.map((person, index) => {
+      return <Person 
+        key={index}
+        name={person.name} 
+        age={person.age} 
+        changed={(event) => this.changeNewHandler(event, index)}
+        deleteItem={(event) => this.deleteHandler(index)}
+      />
     })
-  };
 
-  return (
-    <div className="App">
-      {console.log(personState, otherState)}
-      <h1>Hello, I'm React App</h1>
-      <button onClick={changeNewHandler}>Change new</button>
-      <Person name={personState.persons[0].name} age={personState.persons[0].age} />
-      <Person name={personState.persons[1].name} age={personState.persons[1].age}>Welcome</Person>
-    </div>
-  );
-
+    return (
+      <div className="App">
+        <h1>Hello, I'm React App</h1>
+        {personList}
+      </div>
+    );
+  }
 }
 
-export default app;
+export default App;
