@@ -22,3 +22,27 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.App button {
+  padding: 10px;
+  background-color: aqua;
+  color: green;
+}
+
+.App button:hover {
+  padding: 10px;
+  background-color: aquamarine;
+  color: gray;
+}
+
+.App button.Red {
+  padding: 10px;
+  background-color: aqua;
+  color: green;
+}
+
+.App button.Red:hover {
+  padding: 10px;
+  background-color: aquamarine;
+  color: gray;
+}

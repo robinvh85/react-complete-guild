@@ -1,0 +1,40 @@
+import React, { useState } from 'react';
+import './App.css';
+import Person from './Person/Person';
+
+const App = (props) => {
+
+  const [personState, setPersonState] = useState([
+      {name: 'VH1', age: 15},
+      {name: 'VH2', age: 20}
+  ]);
+
+  const changeNewHandler = (event, index) => {
+    const persons = [...personState];
+    persons[index].name = event.target.value;
+    setPersonState(persons);
+  }
+
+  const deleteHandler = (index) => {
+    const persons = [...personState];
+    persons.splice(index, 1)
+    setPersonState(persons)
+  }
+  
+  return (
+    <div className="App">
+      <h1>Hello, I'm React App</h1>
+      {personState.map((person, index) => {
+        return <Person 
+          key={index}
+          name={person.name} 
+          age={person.age} 
+          changed={(event) => changeNewHandler(event, index)}
+          deleteItem={(event) => deleteHandler(index)}
+        />
+      })}
+    </div>
+  )
+}
+
+export default App;

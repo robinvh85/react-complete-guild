@@ -1,15 +1,24 @@
 import React, { Component } from 'react';
-import './App.css';
-import Person from './Person/Person';
+import classes from './App.css';
+import Persons from './Persons/Persons';
+import AuthContext from './context/auth-context';
+import Footer from './components/footer/Footer';
 
 class App extends Component {
 
+  constructor(props){
+    super(props)
+    console.log("[App] - Constructor")
+  }
+
   state = {
     persons: [
-      {name: 'VH1', age: 15},
-      {name: 'VH2', age: 20}
+      {id: 1, name: 'VH1', age: 15},
+      {id: 2, name: 'VH2', age: 20}
     ],
-    other_value: 'Other values'
+    isShowList: false,
+    otherValue: 'Other values',
+    isAuthenticated: false
   }
 
   changeNewHandler = (event, index) => {
@@ -24,21 +33,56 @@ class App extends Component {
     this.setState({persons: persons})
   }
 
+  toggleClickHandler = () => {
+    this.setState({isShowList: !this.state.isShowList})
+  }
+
+  static getDerivedStateFromProps(state, props) {
+    console.log("[App] - getDeviredStateFromProps")
+    return state;
+  }
+
+  componentDidMount() {
+    console.log("[App] - componentDidMount")
+  }
+
+  loginHandler() {
+    this.setState({ isAuthenticated: true });
+  }
+
+  logoutHandler() {
+    this.setState({ isAuthenticated: false });
+  }
+
   render() {
-    const personList = this.state.persons.map((person, index) => {
-      return <Person 
-        key={index}
-        name={person.name} 
-        age={person.age} 
-        changed={(event) => this.changeNewHandler(event, index)}
-        deleteItem={(event) => this.deleteHandler(index)}
+    console.log("[App] - render")
+    let personList = null;
+    let btnClass = '';
+
+    if(this.state.isShowList){
+      personList = <Persons 
+        persons={this.state.persons} 
+        changeNewHandler={this.changeNewHandler}
+        deleteHandler={this.deleteHandler}
       />
-    })
+
+      btnClass = classes.red;
+    }
 
     return (
       <div className="App">
         <h1>Hello, I'm React App</h1>
-        {personList}
+        <button className={btnClass} onClick={this.toggleClickHandler}>Toggle</button>
+        { this.state.isAuthenticated && <button className={btnClass} onClick={() => this.logoutHandler()}>Logout</button> }
+
+        <AuthContext.Provider value={{
+          authenticated: this.state.isAuthenticated,
+          login: this.loginHandler.bind(this)
+        }}>
+          {personList}
+          <Footer />
+        </AuthContext.Provider>
+        
       </div>
     );
   }
